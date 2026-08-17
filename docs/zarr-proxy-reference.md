@@ -271,20 +271,20 @@ on the VM that e-mails only when one breaks:
 
 | # | Teaches |
 |---|---|
-| 01 | The **citable route**: `icoscp_core` discovery, citations, reading the portal's typed binary column store (one call for all four Cabauw intake heights) |
-| 02 | The Zarr **quickstart habits**: group-URL open, letter-flag QC, lazy slicing, the on-demand session passport |
-| 03 | The **REST route**: `station=` selection, bbox/height/time filters, the passport in the ndjson tail, Arrow bulk |
-| 04 | **FLUXNET**: aggregation groups, the NEE/GPP/RECO reference-slice cubes, fraction QC |
-| 05 | **Ocean**: SOCAT ship tracks with `reduce=track`, the station coverage Gantt, a one-station year map via `station=`, WOCE QC |
-| 06 | **OPeNDAP** for multi-GB gridded netCDF — and when *not* to use it |
-| 07 | **Reproducibility**: passports on all three routes, hash verification, the results-folder checklist |
-| 08 | **Combined views**: stations by geography, a dask select→aggregate→`.compute()` latitude transect, ranking all FLUXNET sites in one expression |
-| 09 | **Under the hood**: zarr-python directly (chunks, codecs, store anatomy), the one-request whole-store inventory, the gridded cube |
-| 10 | **North Sea blooms** (advanced): the Thornton Buoy record, thermal vs biological pCO₂, bloom detection, air–sea CO₂ flux with ERA-5 winds (needs a free DestinE EarthDataHub token) |
-| 11 | **Site explorer** (advanced): one FLUXNET site end to end — every aggregation group, the provenance record, 4-D METEOSENS profiles, full variable inventory |
-| 12 | **Cross-domain extraction** (advanced): one bbox + year across atmosphere CO₂, ecosystem NEE and ocean fCO₂ — one xarray expression each, a passport per store |
-| 13 | **Global SOCAT tour** (advanced): the 44M-obs synthesis — cruises, one ship's fleet history, the gridded fCO₂ globe, the 25-year regional trend gridded vs cruises |
-| 14 | **ObsPack network explorer** (advanced): station index from consolidated metadata, the coverage Gantt for every station × gas, the network map |
+| [01](../notebooks/01_portal_objects_icoscp.ipynb) | The **citable route**: `icoscp_core` discovery, citations, reading the portal's typed binary column store (one call for all four Cabauw intake heights) |
+| [02](../notebooks/02_atmosphere_co2_quickstart.ipynb) | The Zarr **quickstart habits**: group-URL open, letter-flag QC, lazy slicing, the on-demand session passport |
+| [03](../notebooks/03_rest_query_and_passports.ipynb) | The **REST route**: `station=` selection, bbox/height/time filters, the passport in the ndjson tail, Arrow bulk |
+| [04](../notebooks/04_ecosystem_fluxes.ipynb) | **FLUXNET**: aggregation groups, the NEE/GPP/RECO reference-slice cubes, fraction QC |
+| [05](../notebooks/05_ocean_socat.ipynb) | **Ocean**: SOCAT ship tracks with `reduce=track`, the station coverage Gantt, a one-station year map via `station=`, WOCE QC |
+| [06](../notebooks/06_opendap_gridded.ipynb) | **OPeNDAP** for multi-GB gridded netCDF — and when *not* to use it |
+| [07](../notebooks/07_reproducibility.ipynb) | **Reproducibility**: passports on all three routes, hash verification, the results-folder checklist |
+| [08](../notebooks/08_combined_views.ipynb) | **Combined views**: stations by geography, a dask select→aggregate→`.compute()` latitude transect, ranking all FLUXNET sites in one expression |
+| [09](../notebooks/09_zarr_under_the_hood.ipynb) | **Under the hood**: zarr-python directly (chunks, codecs, store anatomy), the one-request whole-store inventory, the gridded cube |
+| [10](../notebooks/10_north_sea_bloom.ipynb) | **North Sea blooms** (advanced): the Thornton Buoy record, thermal vs biological pCO₂, bloom detection, air–sea CO₂ flux with ERA-5 winds (needs a free DestinE EarthDataHub token) |
+| [11](../notebooks/11_explore_zarr.ipynb) | **Site explorer** (advanced): one FLUXNET site end to end — every aggregation group, the provenance record, 4-D METEOSENS profiles, full variable inventory |
+| [12](../notebooks/12_nl_2024_cross_domain.ipynb) | **Cross-domain extraction** (advanced): one bbox + year across atmosphere CO₂, ecosystem NEE and ocean fCO₂ — one xarray expression each, a passport per store |
+| [13](../notebooks/13_socat_v2026_tour.ipynb) | **Global SOCAT tour** (advanced): the 44M-obs synthesis — cruises, one ship's fleet history, the gridded fCO₂ globe, the 25-year regional trend gridded vs cruises |
+| [14](../notebooks/14_explore_obspack.ipynb) | **ObsPack network explorer** (advanced): station index from consolidated metadata, the coverage Gantt for every station × gas, the network map |
 
 Standalone scripts live in [`examples/`](../examples/) — currently the ICOS
 Class 1/2 monthly-statistics exporter (importable + CLI, csv/pyarrow/netcdf/

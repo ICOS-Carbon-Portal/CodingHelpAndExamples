@@ -63,31 +63,15 @@ df <- read.csv(paste0("https://zarr.icos-cp.eu/query?id=icos-obspack.co2.co2",
 For direct Zarr access, `Rarr::read_zarr_array()` reads our v2 arrays over
 HTTPS.
 
-## Gaps we found while writing this — and what we did about them
-
-1. **No CSV output.** `format=` accepted only `ndjson`, `arrow` and
-   `parquet`. CSV is the lingua franca for R and spreadsheet users, and its
-   absence was a real barrier. **Fixed: `format=csv` now returns plain
-   RFC-4180 text** that loads with a bare `read.csv()` — no `skip=`, no
-   `comment.char=`, nothing to explain first.
-2. **An unsupported `format=` silently returned ndjson**, so `format=csv`
-   looked like it worked and quietly gave you something else. That
-   contradicted the service's own "a filter that cannot apply fails loud"
-   contract. **Fixed: unknown formats now answer 400 and name the valid
-   choices.**
-3. **The passport is easy to lose in a non-Python client.** In ndjson it is
-   the last line; in Arrow/Parquet it is schema metadata. Both are readable
-   from Julia and R, but our examples never showed how.
-
-A caveat worth stating plainly, because it decides which format to
-recommend: **CSV cannot carry the passport.** A passport is ~7 KB even for a
-two-row result, which is more than an HTTP header block can hold, so a CSV
-response carries only `X-Data-Citation`, `X-Data-License` and `X-Data-DOI`
-headers — enough to cite the data correctly, not enough to reproduce the
-query. So CSV is the right default for a quick look and for handing data to
-a colleague, and **Parquet is the right default for analysis you intend to
-publish**, in every language. The R and Julia examples should teach the
-Parquet habit and mention CSV, not the other way round.
+One caveat decides which format to recommend: **CSV cannot carry the
+passport.** A passport is ~7 KB even for a two-row result, more than an HTTP
+header block holds, so a CSV response carries only `X-Data-Citation`,
+`X-Data-License` and `X-Data-DOI` — enough to cite the data correctly, not
+enough to reproduce the query. CSV is therefore the right default for a quick
+look or for handing a table to a colleague, and **Parquet is the right
+default for analysis you intend to publish**, in every language. The Julia
+and R examples should teach the Parquet habit and mention CSV, not the other
+way round.
 
 ## Planned deliverables
 
