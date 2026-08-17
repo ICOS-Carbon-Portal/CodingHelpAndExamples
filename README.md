@@ -50,6 +50,13 @@ The service is plain HTTP — Zarr over HTTPS plus a REST API — so it is not
 Python-only. See [`docs/julia-and-r-plan.md`](docs/julia-and-r-plan.md) for
 what Julia and R users can do today and what we plan to add.
 
+## Licence
+
+The code here is [GPL-3.0](LICENSE), like the rest of the ICOS Carbon Portal
+software. The **data** you reach with it are CC-BY-4.0 — a separate licence
+with its own obligation: cite what you used. Every route hands you the
+citation string, so take it from the data rather than writing one yourself.
+
 ## Keeping this honest
 
 The notebooks are re-executed against the live services by a weekly job; if
