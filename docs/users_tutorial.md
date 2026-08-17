@@ -252,26 +252,60 @@ passport handling.
 | [SOCAT ocean viewer](https://socat-viewer.icos-cp.eu/) | `icos-socat.zarr`, `socat-gridded.zarr` |
 | [NOAA GlobalView atmosphere viewer](https://globalview.icos-cp.eu/) | GlobalView (login required) |
 
-If you are building something similar, start from the viewer closest to your
-domain rather than from a blank notebook.
+Each viewer has a **code snippet** panel: select a station, a variable and a
+time range, and it prints the Python that reproduces exactly what you are
+looking at — the fastest way to turn a plot you like into a script you own.
 
-## 9. Worked examples (notebooks on the JupyterHub)
+## 9. Worked examples
 
-Each notebook takes one route end to end; start here if you prefer running code
-to reading it.
+Start here if you prefer running code to reading it. All of these live in the
+public [**CodingHelpAndExamples**][repo] repository, committed **with executed
+outputs** — so you can read the results on GitHub without running anything, and
+run them anywhere (the ICOS JupyterHub needs no setup at all).
 
-| Notebook | Route | You will learn |
+Notebooks 01–09 take one access route each; 10–14 are longer worked studies.
+
+[repo]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples
+
+| Notebook | Route | What you will learn |
 |---|---|---|
-| 1. Quickstart | `icoscp_core` | search → inspect → load → cite |
-| 2. Atmosphere time series | Zarr (ObsPack) | QC filtering, monthly means, growth rate |
-| 3. Ecosystem fluxes | Zarr (FLUXNET) | aggregation groups, NEE seasonal cycle |
-| 4. Ocean ship tracks | Zarr (SOCAT) | cruise selection, pCO₂ track map |
-| 5. Large gridded data | OPeNDAP | remote subsetting of an inventory |
-| 6. Reproducibility | all | tokens, citations, data passports |
+| [01 · Portal data objects][nb01] | `icoscp_core` | the citable route: discovery, citations, binary column reads |
+| [02 · Atmosphere CO₂ quickstart][nb02] | Zarr (ObsPack) | a tall-tower series in five cells, QC flags, session passport |
+| [03 · REST query API + passports][nb03] | REST | filtered extracts by bbox/height/time, Arrow bulk reads |
+| [04 · Ecosystem fluxes][nb04] | Zarr (FLUXNET) | aggregation groups, NEE/GPP/RECO slices, fraction QC |
+| [05 · Ocean SOCAT cruises][nb05] | Zarr (SOCAT) | ship tracks with `reduce=track`, one cruise in full, WOCE QC |
+| [06 · OPeNDAP for large grids][nb06] | OPeNDAP | multi-GB netCDF sliced server-side — and when *not* to use DAP |
+| [07 · Reproducibility][nb07] | all | passports on every route, integrity hashes, the results checklist |
+| [08 · Across stations][nb08] | Zarr (combined) | dense panels: pick stations by geography, lazy latitude transect |
+| [09 · Zarr under the hood][nb09] | Zarr | store anatomy, whole-store inventory, the gridded cube |
+| [10 · North Sea blooms][nb10] | advanced | bloom detection, thermal vs biological pCO₂, air–sea flux with ERA-5 |
+| [11 · Site explorer][nb11] | advanced | one site end to end: every group, provenance, 4-D profiles |
+| [12 · Cross-domain extraction][nb12] | advanced | one bbox + year across atmosphere, ecosystem and ocean |
+| [13 · Global SOCAT tour][nb13] | advanced | 44M observations: cruises, ships, the fCO₂ globe, the 25-year trend |
+| [14 · ObsPack network explorer][nb14] | advanced | station index, coverage Gantt per station × gas, network map |
 
-*(links added as each notebook lands)*
+[nb01]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/01_portal_objects_icoscp.ipynb
+[nb02]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/02_atmosphere_co2_quickstart.ipynb
+[nb03]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/03_rest_query_and_passports.ipynb
+[nb04]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/04_ecosystem_fluxes.ipynb
+[nb05]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/05_ocean_socat.ipynb
+[nb06]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/06_opendap_gridded.ipynb
+[nb07]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/07_reproducibility.ipynb
+[nb08]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/08_combined_views.ipynb
+[nb09]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/09_zarr_under_the_hood.ipynb
+[nb10]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/10_north_sea_bloom.ipynb
+[nb11]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/11_explore_zarr.ipynb
+[nb12]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/12_nl_2024_cross_domain.ipynb
+[nb13]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/13_socat_v2026_tour.ipynb
+[nb14]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/notebooks/14_explore_obspack.ipynb
 
-## 9. Citing what you used, and data passports
+The same repository also holds [standalone example scripts][ex] you can import
+or run from the command line, and the full [service reference][ref].
+
+[ex]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/tree/main/examples
+[ref]: https://github.com/ICOS-Carbon-Portal/CodingHelpAndExamples/blob/main/docs/zarr-proxy-reference.md
+
+## 10. Citing what you used, and data passports
 
 Every route can hand you the citation string. Never write one yourself, and
 never reconstruct a DOI — take it from the data.
