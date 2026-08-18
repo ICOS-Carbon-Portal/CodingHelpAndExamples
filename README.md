@@ -47,8 +47,10 @@ flux section additionally needs a free
 ## Other languages
 
 The service is plain HTTP — Zarr over HTTPS plus a REST API — so it is not
-Python-only. See [`docs/julia-and-r-plan.md`](docs/julia-and-r-plan.md) for
-what Julia and R users can do today and what we plan to add.
+Python-only. [`docs/other-languages.md`](docs/other-languages.md) has **tested**
+Julia and R recipes (every snippet was executed against the live service, and
+two of them are there because the obvious version silently returned wrong
+data), plus what is known and not yet known about MATLAB.
 
 ## Licence
 
