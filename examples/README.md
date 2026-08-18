@@ -19,6 +19,7 @@ against the live service** and return the same 8701 rows and mean of
 | [`r/station_series_csv.R`](r/station_series_csv.R) | Base R, no packages — `format=csv` straight into `read.csv` |
 | [`r/station_series_arrow.R`](r/station_series_arrow.R) | httr2 + arrow, with the full data passport; use this for published work |
 | [`julia/station_series.jl`](julia/station_series.jl) | HTTP.jl + JSON3 + DataFrames |
+| [`octave/station_series.m`](octave/station_series.m) | GNU Octave, no packages — both the CSV and the passport-carrying ndjson route |
 
 Each one carries the trap it took a test run to find — the missing
 `format=csv` that turns ndjson into seven junk columns, the Arrow timestamps

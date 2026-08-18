@@ -1,16 +1,16 @@
-# Julia, R and MATLAB — what actually works
+# Julia, R, Octave and MATLAB — what actually works
 
 The ICOS zarr service is **plain HTTP**: Zarr v2 stores served as static
 objects, plus a REST query API that streams tabular results. Nothing about it
 is Python-specific — the Python examples in this repo are the best-developed
 ones, not the only possible ones.
 
-**Every Julia and R snippet below was executed against the live service** on
-2026-08-18 (R 4.3.3 with httr2 + arrow 25.0.0; Julia 1.10.4 with HTTP.jl,
-JSON3, DataFrames and Zarr.jl) and the outputs quoted are what came back. The
-MATLAB section is the exception and says so.
+**Every Julia, R and Octave snippet below was executed against the live
+service** on 2026-08-18 (R 4.3.3 with httr2 + arrow 25.0.0; Julia 1.10.4 with
+HTTP.jl, JSON3, DataFrames and Zarr.jl; Octave 8.4.0) and the outputs quoted
+are what came back. The MATLAB section is the exception and says so.
 
-All three agree on the same query — one station, one year, QC applied:
+All of them agree on the same query — one station, one year, QC applied:
 **8701 rows, mean CO₂ 426.837 ppm** — which is also what the Python route
 returns.
 
@@ -206,11 +206,62 @@ The practical consequence: **you cannot apply QC client-side in Julia**,
 because the flag arrays are exactly the ones that will not load. Use
 `apply_qc=true` on the REST route and let the server do it.
 
+## Octave
+
+Octave reaches the service happily, and needs **no packages at all**: `urlread`
+and `webread` are there, and `jsondecode` is a builtin. The CSV route parses
+with `textscan` and returns the same 8701 rows and 426.837 ppm as everything
+else.
+
+The important thing to know before writing any of it: **Octave is not a
+stand-in for MATLAB here.** Verified missing in Octave 8.4.0 —
+
+| Missing | Consequence |
+|---|---|
+| `table`, `readtable` | no table type; use `textscan` into cell/numeric arrays |
+| `datetime` | use `datenum` + `datestr` |
+| `parquetread`, `zarrread` | those routes do not exist at all |
+| `websave` | `urlread`/`webread` only (both work) |
+
+So code written for Octave will *not* run unchanged in MATLAB and vice versa;
+the MATLAB idioms below are exactly the ones Octave lacks.
+
+```octave
+txt   = urlread([base q '&format=csv']);
+lines = strsplit(strtrim(txt), "\n");
+C     = textscan(strjoin(lines(2:end), "\n"), '%q %q %f %f %f %q %f', 'Delimiter', ',');
+dn    = datenum(cellfun(@(s) s(1:19), C{2}, 'UniformOutput', false), 'yyyy-mm-dd HH:MM:SS');
+```
+
+**Use the ndjson route for anything you intend to publish.** Octave cannot see
+response headers through `urlread`/`webread`, so the `X-Data-Citation` header
+a CSV response carries is unreachable — while the ndjson stream carries the
+whole passport as its last line, which `jsondecode` reads without any extra
+package. Note that `jsondecode` renames JSON-LD keys: `@graph` becomes
+`x_graph` and `@id` becomes `x_id`.
+
+```octave
+pp    = jsondecode(lines{end})._passport;
+graph = pp.x_graph;      % find the node whose x_id is './' for the citation
+```
+
+**OPeNDAP is unresolved.** The `octave-netcdf` package provides `ncread`/
+`ncinfo` and its netCDF-C does speak DAP, but the ICOS endpoint answers
+`HTTP 500` to an unauthenticated `.dds`/`.das` request — confirmed with plain
+`curl`, so this is not an Octave limitation. It needs a portal token, and
+passing ICOS credentials through netCDF-C (`.dodsrc`, cookie jar) is untested.
+Worth noting separately that a 500 is the wrong answer to an unauthenticated
+request; 401 would be.
+
+See [`examples/octave/station_series.m`](../examples/octave/station_series.m).
+
 ## MATLAB — *not tested*
 
 No MATLAB was available to run these, so unlike everything above this section
 is from documentation and should be treated as a starting point, not a
 promise. If you try it, please open an issue saying what actually happened.
+(Octave does **not** settle these questions: every idiom below is one Octave
+lacks.)
 
 - **CSV → `readtable`.** `readtable` accepts an HTTPS URL, so `format=csv`
   should give a one-liner with no toolbox. Expected to be the easiest route,
