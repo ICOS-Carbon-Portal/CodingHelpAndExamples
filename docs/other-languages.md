@@ -84,15 +84,29 @@ R can read it:
 
 ```r
 tbl <- read_ipc_stream(resp_body_raw(req_perform(req)), as_data_frame = FALSE)
-pp  <- jsonlite::fromJSON(tbl$schema$metadata[["data_passport"]])
+pp  <- jsonlite::fromJSON(tbl$schema$metadata[["data_passport"]],
+                          simplifyVector = FALSE)
+length(pp[["@graph"]])    # 6 nodes: the crate root, this query, the variable,
+                          # the station, the source objects, the licence
 ```
 
-→ a 30-node JSON-LD graph with the citation, licence and collection DOI.
-CSV cannot carry this (a passport is ~7 KB even for two rows, more than an
-HTTP header block holds), so a CSV response instead carries `X-Data-Citation`,
-`X-Data-License` and `X-Data-DOI` headers — enough to cite correctly, not
-enough to reproduce the query. **Use Arrow or Parquet for anything you intend
-to publish.**
+Pass `simplifyVector = FALSE`, or jsonlite folds `@graph` into a data frame and
+`length()` then counts *columns* rather than nodes — it will tell you there are
+30 of them.
+
+CSV cannot carry this at all (a passport is ~7 KB even for two rows, more than
+an HTTP header block holds), so a CSV response instead carries
+`X-Data-Citation`, `X-Data-License` and `X-Data-DOI` headers — enough to cite
+correctly, not enough to reproduce the query. **Use Arrow or Parquet for
+anything you intend to publish.**
+
+Reading those headers in R needs a GET whose response you keep —
+`curlGetHeaders()` issues a **HEAD**, and `/query` answers `405` to that:
+
+```r
+r <- curl::curl_fetch_memory(url)
+grep("^x-data-citation", curl::parse_headers(r$headers), value = TRUE, ignore.case = TRUE)
+```
 
 ### Direct Zarr in R — don't
 
@@ -226,7 +240,9 @@ promise. If you try it, please open an issue saying what actually happened.
 4. **A passport-only response** (e.g. `format=passport`), so provenance is one
    plain-JSON request in any language. Today a CSV or MATLAB user has no
    one-line way to get the crate, which is the weakest point in the
-   cross-language story.
+   cross-language story — and the cheap workaround, a `HEAD` request for just
+   the citation headers, is not available either: `/query` answers **405** to
+   `HEAD`. Supporting `HEAD`, or adding this route, would fix the same gap.
 
 ## What we are *not* planning
 

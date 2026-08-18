@@ -8,6 +8,24 @@ closer to what an analysis script looks like in practice.
 |---|---|
 | [`obspack_class12_stats.py`](obspack_class12_stats.py) | For every ICOS **Class 1 + Class 2** atmosphere station, pull the QC-passed hourly CO₂/CH₄/CO/N₂O series, write a regular-hourly station matrix, and compute pooled **monthly statistics** (mean + 5th…95th percentiles in steps of 5, timestamped mid-month). Output as csv / pyarrow / netcdf / parquet. |
 
+## Other languages
+
+The service is plain HTTP, so it is not Python-only. These were **executed
+against the live service** and return the same 8701 rows and mean of
+426.837 ppm as the Python route:
+
+| Script | Notes |
+|---|---|
+| [`r/station_series_csv.R`](r/station_series_csv.R) | Base R, no packages — `format=csv` straight into `read.csv` |
+| [`r/station_series_arrow.R`](r/station_series_arrow.R) | httr2 + arrow, with the full data passport; use this for published work |
+| [`julia/station_series.jl`](julia/station_series.jl) | HTTP.jl + JSON3 + DataFrames |
+
+Each one carries the trap it took a test run to find — the missing
+`format=csv` that turns ndjson into seven junk columns, the Arrow timestamps
+with no timezone attribute, the abstractly-typed Julia columns. See
+[`docs/other-languages.md`](../docs/other-languages.md) for the full account,
+including why direct Zarr access is not usable from R today.
+
 Use it either way:
 
 ```python
